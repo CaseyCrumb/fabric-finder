@@ -1,29 +1,26 @@
-export default function Post(){
-    return (
-<div className="post">
-        <div className="image">
-          <img
-            src="https://fabricdepot.com/cdn/shop/files/1708635707626_APS5340_220x.jpg?v=1708636405"
-            alt=""
-          ></img>
-        </div>
-        <div className="texts">
-          <h2>
-            Light Beige Solid Stretch Super Modal Rayon Spandex Jersey Knit
-            Fabric
-          </h2>
-          <p className="info">
-            <a className="author">Alex Rilley</a>
-            <time>2024-03-18 14:20</time>
-          </p>
-          <p className="summary">
-            $7.28, MSRP: $16.00/yd, Width: 59", Color: Shell Beige, Fabric
-            Content: 92%RayonModal-8% Spandex, Suitable For: Apparel,
-            Activewear, Dancewear, Dresses, Blouses, Basic-Tees, Care: Machine
-            Wash Cold Air Dry
-          </p>
-        </div>
+import {formatISO9075} from "date-fns";
+import {Link} from "react-router-dom";
+
+export default function Post({_id,title,summary,cover,content,createdAt,author}) {
+
+  return (
+    <div className="post">
+      <div className="image">
+        <Link to={`/post/${_id}`}>
+          <img src={'http://localhost:4000/'+cover} alt=""/>
+        </Link>
       </div>
-    );
+      <div className="texts">
+        <Link to={`/post/${_id}`}>
+        <h2>{title}</h2>
+        </Link>
+        <p className="info">
+          <a className="author">{author.username}</a>
+          <time>{formatISO9075(new Date(createdAt))}</time>
+        </p>
+        <p className="summary">{summary}</p>
+      </div>
+    </div>
+  );
 }
 

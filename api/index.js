@@ -19,9 +19,14 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
-mongoose.connect('mongodb+srv://Zaycara:<Noah1993>@cluster0.0sidw47.mongodb.net/');
+const uri = "mongodb+srv://Zaycara:Noah1993@cluster0.0sidw47.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.log('Failed to connect to MongoDB:', err));
 
 app.post('/register', async (req,res) => {
+  console.log('post/register');
   const {username,password} = req.body;
   try{
     const userDoc = await User.create({
@@ -120,12 +125,13 @@ app.put('/post',uploadMiddleware.single('file'), async (req,res) => {
 });
 
 app.get('/post', async (req,res) => {
-  res.json(
-    await Post.find()
-      .populate('author', ['username'])
-      .sort({createdAt: -1})
-      .limit(20)
-  );
+  console.log('GET POST');
+  // res.json(
+  //   await Post.find()
+  //     .populate('author', ['username'])
+  //     .sort({createdAt: -1})
+  //     .limit(20)
+  // );
 });
 
 app.get('/post/:id', async (req, res) => {

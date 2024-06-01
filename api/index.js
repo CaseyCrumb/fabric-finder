@@ -71,11 +71,15 @@ app.post('/logout', (req,res) => {
 });
 
 app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
-  const {originalname,path} = req.file;
-  const parts = originalname.split('.');
-  const ext = parts[parts.length - 1];
-  const newPath = path+'.'+ext;
-  fs.renameSync(path, newPath);
+  console.log("/post route post request")
+
+  if (file) {
+    const {originalname,path} = req.file;
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = path+'.'+ext;
+    fs.renameSync(path, newPath);
+  }
 
   const {token} = req.cookies;
   jwt.verify(token, secret, {}, async (err,info) => {
@@ -126,12 +130,12 @@ app.put('/post',uploadMiddleware.single('file'), async (req,res) => {
 
 app.get('/post', async (req,res) => {
   console.log('GET POST');
-  // res.json(
-  //   await Post.find()
-  //     .populate('author', ['username'])
-  //     .sort({createdAt: -1})
-  //     .limit(20)
-  // );
+  res.json(
+    await Post.find()
+      .populate('author', ['username'])
+      .sort({createdAt: -1})
+      .limit(20)
+  );
 });
 
 app.get('/post/:id', async (req, res) => {
